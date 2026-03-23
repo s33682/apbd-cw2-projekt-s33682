@@ -1,15 +1,9 @@
-﻿using EquipmentRental.Account;
-using EquipmentRental.Item;
+﻿
+using EquipmentRental.Service;
 
-Database _database = new Database();
+var db = new Database();
 
-User dawid = new Student(1, "Dawid", "Ochnio", "spooky", "Dawid123");
-
-_database.AddUser(dawid);
-
-Console.Write("Login: ");
-String username = Console.ReadLine() ?? "";
-Console.Write("Password: ");
-String password  = Console.ReadLine() ?? "";
-
-Console.WriteLine(_database.Login(username, password));
+var serviceAccount = new ServiceAccount(db);
+var serviceItem = new ServiceItem(db);
+var serviceRaport = new ServiceRaport(db);
+var serviceRental = new ServiceRental(db);
