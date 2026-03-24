@@ -138,17 +138,17 @@ public class Database
     
     
 
-    public bool Login(string userName, string password)
+    public User Login(string userName, string password)
     {
         for (int i=0; i<Users.Count; i++){
             if (userName.Equals(Users[i].Name))
             {
                 if (password.Equals(Users[i].Password))
                 {
-                    return true;
+                    return Users[i];
                 }
             }
         }
-        return false;
+        return null;
     }
 }
