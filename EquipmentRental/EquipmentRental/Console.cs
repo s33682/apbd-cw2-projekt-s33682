@@ -1,4 +1,3 @@
-﻿
 using EquipmentRental.Service;
 
 var db = new Database();
