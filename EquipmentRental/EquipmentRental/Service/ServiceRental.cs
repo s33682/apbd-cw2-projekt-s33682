@@ -29,11 +29,11 @@ public class ServiceRental
         }
     }
     
-    public int ReturnItem(int itemId, int rentalId)
+    public int ReturnItem(int rentalId)
     {
-        var item = _db.GetItem(itemId);
         var rental = _db.GetRental(rentalId);
-
+        var item = _db.GetItem(rental.Item.Id);
+        
         var present = DateTime.Now;
         var lengthCount = present - rental.Date;
         

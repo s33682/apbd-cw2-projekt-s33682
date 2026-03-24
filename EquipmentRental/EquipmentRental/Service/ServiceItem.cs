@@ -25,4 +25,9 @@ public class ServiceItem
     {
         db.AddDevice(new Camera(db.GetNewItemId(), price, lens, sdCardSize));
     }
+
+    public Device GetItemById(int itemId)
+    {
+        return db.GetItem(itemId);
+    }
 }

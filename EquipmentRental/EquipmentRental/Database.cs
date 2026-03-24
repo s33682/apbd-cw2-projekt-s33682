@@ -12,6 +12,19 @@ public class Database
         Devices = new List<Device>();
         Users = new List<User>();
         Rentals = new List<Rental>();
+        
+        Users.Add(new Employee(GetNewAccountId(), "Admin", "Admin", "admin", "admin123"));
+    
+        Users.Add(new Student(GetNewAccountId(), "Jan", "Kowalski", "student", "student123"));
+
+        Devices.Add(new Laptop(GetNewItemId(), 150.0f, "Windows 11", "Intel Core i7", "16GB", "RTX 3060", "1TB SSD"));
+        Devices.Add(new Laptop(GetNewItemId(), 200.0f, "macOS", "Apple M2", "16GB", "Zintegrowana", "512GB SSD"));
+    
+        Devices.Add(new Camera(GetNewItemId(), 80.0f, "Sony 50mm f/1.8", 128));
+        Devices.Add(new Camera(GetNewItemId(), 120.0f, "Canon 24-70mm", 256));
+    
+        Devices.Add(new Projector(GetNewItemId(), 100.0f, "1920x1080 (FullHD)", 3000));
+        Devices.Add(new Projector(GetNewItemId(), 180.0f, "3840x2160 (4K)", 5000));
     }
 
     
@@ -81,7 +94,6 @@ public class Database
         }
         return UserRentals;
     }
-
     public List<Rental> GetExpiredRentals()
     {
         List<Rental> expired = new List<Rental>();
@@ -93,6 +105,18 @@ public class Database
             }
         }
         return expired;
+    }
+    public List<Device> GetAvailableDevices()
+    {
+        List<Device> devices = new List<Device>();
+        foreach (var device in Devices)
+        {
+            if (device.Availability)
+            {
+                devices.Add(device);
+            }
+        }
+        return devices;
     }
 
 
@@ -120,7 +144,6 @@ public class Database
         }
         return max+1;
     }
-    
     public int GetNewAccountId()
     {
         int max = 0;
@@ -140,7 +163,7 @@ public class Database
     public User Login(string userName, string password)
     {
         for (int i=0; i<Users.Count; i++){
-            if (userName.Equals(Users[i].Name))
+            if (userName.Equals(Users[i].Username))
             {
                 if (password.Equals(Users[i].Password))
                 {
