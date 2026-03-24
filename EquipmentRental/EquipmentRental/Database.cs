@@ -1,44 +1,153 @@
-﻿using EquipmentRental.Item;
+using EquipmentRental.Item;
 using EquipmentRental.Account;
 
 public class Database
 {
-    public List<Device> _devices  { get; private set; }
-    public List<User> _users  { get; private set; }
-    public List<Rental> _rentals  { get; private set; }
+    public List<Device> Devices  { get; private set; }
+    public List<User> Users  { get; private set; }
+    public List<Rental> Rentals  { get; private set; }
 
     public Database()
     {
-        _devices = new List<Device>();
-        _users = new List<User>();
-        _rentals = new List<Rental>();
+        Devices = new List<Device>();
+        Users = new List<User>();
+        Rentals = new List<Rental>();
     }
 
+    
+    
     public void AddDevice(Device device)
     {
-        _devices.Add(device);
+        Devices.Add(device);
     }
     public void AddUser(User user)
     {
-        _users.Add(user);
+        Users.Add(user);
     }
-
     public void AddRental(Rental rental)
     {
-        _rentals.Add(rental);
+        Rentals.Add(rental);
     }
 
-    public bool Login(string userName, string password)
+    
+    
+    public User GetUser(int userId)
     {
-        for (int i=0; i<_users.Count; i++){
-            if (userName.Equals(_users[i].Name))
+        foreach (var user in Users)
+        {
+            if (user.Id == userId)
             {
-                if (password.Equals(_users[i].Password))
+                return user;
+            }
+        }
+        return null;
+    }
+    public Device GetItem(int itemId)
+    {
+        foreach (var device in Devices)
+        {
+            if (device.Id == itemId)
+            {
+                return device;
+            }
+        }
+        return null;
+    }
+    public Rental GetRental(int rentalId)
+    {
+        foreach (var rental in Rentals)
+        {
+            if (rental.Id == rentalId)
+            {
+                return rental;
+            }
+        }
+        return null;
+    }
+    
+    
+    
+
+    public List<Rental> GetUserActiveRentals(int userId)
+    {
+        List<Rental> UserRentals = new List<Rental>();
+
+        foreach (var item in Rentals)
+        {
+            if (item.Who.Id == userId && item.IsActive)
+            {
+                UserRentals.Add(item);
+            }
+        }
+        return UserRentals;
+    }
+
+    public List<Rental> GetExpiredRentals()
+    {
+        List<Rental> expired = new List<Rental>();
+        foreach (var rental in Rentals)
+        {
+            if (rental.Date.AddDays(rental.Length) < DateTime.Now && rental.IsActive)
+            {
+                expired.Add(rental);
+            }
+        }
+        return expired;
+    }
+
+
+    public int GetNewItemId()
+    {
+        int max = 0;
+        foreach (var a in Devices)
+        {
+            if(a.Id > max)
+            {
+                max = a.Id;
+            }
+        }
+        return max+1;
+    }
+    public int GetNewRentalId()
+    {
+        int max = 0;
+        foreach (var a in Rentals)
+        {
+            if(a.Id > max)
+            {
+                max = a.Id;
+            }
+        }
+        return max+1;
+    }
+    
+    public int GetNewAccountId()
+    {
+        int max = 0;
+        foreach (var a in Users)
+        {
+            if(a.Id > max)
+            {
+                max = a.Id;
+            }
+        }
+        return max+1;
+    }
+    
+    
+    
+
+    public User Login(string userName, string password)
+    {
+        for (int i=0; i<Users.Count; i++){
+            if (userName.Equals(Users[i].Name))
+            {
+                if (password.Equals(Users[i].Password))
                 {
-                    return true;
+                    return Users[i];
                 }
             }
         }
-        return false;
+        return null;
     }
 }
