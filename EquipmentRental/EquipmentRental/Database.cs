@@ -1,4 +1,5 @@
-﻿using EquipmentRental.Item;
+﻿using System.Collections.Immutable;
+using EquipmentRental.Item;
 using EquipmentRental.Account;
 
 public class Database
@@ -14,6 +15,8 @@ public class Database
         Rentals = new List<Rental>();
     }
 
+    
+    
     public void AddDevice(Device device)
     {
         Devices.Add(device);
@@ -22,11 +25,118 @@ public class Database
     {
         Users.Add(user);
     }
-
     public void AddRental(Rental rental)
     {
         Rentals.Add(rental);
     }
+
+    
+    
+    public User GetUser(int userId)
+    {
+        foreach (var user in Users)
+        {
+            if (user.Id == userId)
+            {
+                return user;
+            }
+        }
+        return null;
+    }
+    public Device GetItem(int itemId)
+    {
+        foreach (var device in Devices)
+        {
+            if (device.Id == itemId)
+            {
+                return device;
+            }
+        }
+        return null;
+    }
+    public Rental GetRental(int rentalId)
+    {
+        foreach (var rental in Rentals)
+        {
+            if (rental.Id == rentalId)
+            {
+                return rental;
+            }
+        }
+        return null;
+    }
+    
+    
+    
+
+    public List<Rental> GetUserActiveRentals(int userId)
+    {
+        List<Rental> UserRentals = new List<Rental>();
+
+        foreach (var item in Rentals)
+        {
+            if (item.Who.Id == userId && item.IsActive)
+            {
+                UserRentals.Add(item);
+            }
+        }
+        return UserRentals;
+    }
+
+    public List<Rental> GetExpiredRentals()
+    {
+        List<Rental> expired = new List<Rental>();
+        foreach (var rental in Rentals)
+        {
+            if (rental.Date.AddDays(rental.Length) < DateTime.Now && rental.IsActive)
+            {
+                expired.Add(rental);
+            }
+        }
+        return expired;
+    }
+
+
+    public int GetNewItemId()
+    {
+        int max = 0;
+        foreach (var a in Devices)
+        {
+            if(a.Id > max)
+            {
+                max = a.Id;
+            }
+        }
+        return max+1;
+    }
+    public int GetNewRentalId()
+    {
+        int max = 0;
+        foreach (var a in Rentals)
+        {
+            if(a.Id > max)
+            {
+                max = a.Id;
+            }
+        }
+        return max+1;
+    }
+    
+    public int GetNewAccountId()
+    {
+        int max = 0;
+        foreach (var a in Users)
+        {
+            if(a.Id > max)
+            {
+                max = a.Id;
+            }
+        }
+        return max+1;
+    }
+    
+    
+    
 
     public bool Login(string userName, string password)
     {
