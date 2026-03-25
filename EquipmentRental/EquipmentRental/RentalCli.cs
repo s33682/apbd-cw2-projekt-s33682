@@ -199,8 +199,15 @@ public class RentalCli
         
         
         
-        _serviceRental.RentItem(itemId, current.Id, days);
-        Console.WriteLine($"Item Rented! To pay: {_serviceItem.GetItemById(itemId).Price*days}. Press enter to continue...");
+        bool isRented = _serviceRental.RentItem(itemId, current.Id, days);
+
+        if (isRented)
+        {
+            Console.WriteLine($"Item Rented! To pay: {_serviceItem.GetItemById(itemId).Price*days}. Press enter to continue...");
+            Console.ReadLine();
+            return;
+        }
+        Console.WriteLine("Item can't be rented! You reached limit. Press enter to continue...");
         Console.ReadLine();
     }
 

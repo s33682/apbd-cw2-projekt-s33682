@@ -17,7 +17,7 @@ public class ServiceRental
         return _db.GetRental(rentalId);
     }
 
-    public void RentItem(int itemId, int userId, int duration)
+    public bool RentItem(int itemId, int userId, int duration)
     {
         var user = _db.GetUser(userId);
         var item = _db.GetItem(itemId);
@@ -30,8 +30,10 @@ public class ServiceRental
             {
                 _db.AddRental(new Rental(_db.GetNewRentalId(), user, item, DateTime.Now, duration, true));
                 item.SetAvailability(false);
+                return  true;
             }
         }
+        return false;
     }
     public int ReturnItem(int rentalId)
     {
