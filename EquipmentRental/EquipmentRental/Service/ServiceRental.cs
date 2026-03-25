@@ -11,7 +11,12 @@ public class ServiceRental
     {
         this._db = _db;
     }
-    
+
+    public Rental GetRentalById(int rentalId)
+    {
+        return _db.GetRental(rentalId);
+    }
+
     public void RentItem(int itemId, int userId, int duration)
     {
         var user = _db.GetUser(userId);
@@ -28,7 +33,6 @@ public class ServiceRental
             }
         }
     }
-    
     public int ReturnItem(int rentalId)
     {
         var rental = _db.GetRental(rentalId);

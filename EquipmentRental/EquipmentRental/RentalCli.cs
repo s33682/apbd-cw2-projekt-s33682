@@ -1,5 +1,6 @@
 ﻿using EquipmentRental.Service;
 using EquipmentRental.Account;
+using EquipmentRental.Item;
 
 namespace EquipmentRental;
 
@@ -177,9 +178,26 @@ public class RentalCli
             return;
         }
 
-        int itemId = GetNumber("Enter item ID: ");
+        int itemId;
+        Device selectedItem;
         
+        while (true)
+        {
+            itemId = GetNumber("Enter item ID: ");
+            
+            selectedItem = _serviceItem.GetItemById(itemId);
+
+            if (selectedItem != null && selectedItem.Availability)
+            {
+                break;
+            }
+            
+            Console.WriteLine("Invalid ID! Try again!");
+        }
+
         int days = GetNumber("Enter duration in days: ");
+        
+        
         
         _serviceRental.RentItem(itemId, current.Id, days);
         Console.WriteLine($"Item Rented! To pay: {_serviceItem.GetItemById(itemId).Price*days}. Press enter to continue...");
@@ -199,7 +217,22 @@ public class RentalCli
             return;
         }
 
-        int rentalId = GetNumber("Enter rental ID: ");
+        int rentalId;
+        Rental selectedRental;
+        
+        while (true)
+        {
+            rentalId = GetNumber("Enter rental ID: ");
+            
+            selectedRental = _serviceRental.GetRentalById(rentalId);
+
+            if (selectedRental != null && selectedRental.IsActive)
+            {
+                break;
+            }
+            
+            Console.WriteLine("Invalid ID! Try again!");
+        }
 
         int punishment = _serviceRental.ReturnItem(rentalId);
 
