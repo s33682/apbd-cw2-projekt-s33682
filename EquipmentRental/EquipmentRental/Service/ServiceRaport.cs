@@ -57,7 +57,7 @@ public class ServiceRaport
 
         foreach (Device device in devices)
         {
-            string status = device.Availability?"Available":"Rented";
+            string status = device.Availability?"Available":"Unavailable";
             Console.WriteLine($"{device.Id}: {device.Name} for {device.Price}$/day [ {status} ]");
         }
         return true;
