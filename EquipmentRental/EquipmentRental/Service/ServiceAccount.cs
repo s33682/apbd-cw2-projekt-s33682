@@ -43,4 +43,9 @@ public class ServiceAccount
     {
         return _currentUser;
     }
+
+    public User GetUserById(int userid)
+    {
+        return _db.GetUser(userid);
+    }
 }

@@ -25,6 +25,9 @@ public class Database
     
         Devices.Add(new Projector(GetNewItemId(), 100.0f, "1920x1080 (FullHD)", 3000));
         Devices.Add(new Projector(GetNewItemId(), 180.0f, "3840x2160 (4K)", 5000));
+
+        GetItem(1).SetAvailability(false);
+        Rentals.Add(new Rental(GetNewRentalId(), GetUser(2), GetItem(1), DateTime.Now.AddDays(-5), 2, true));
     }
 
     
@@ -77,9 +80,49 @@ public class Database
         }
         return null;
     }
-    
-    
-    
+
+
+    public int CountDevices()
+    {
+        return Devices.Count;
+    }
+
+    public int CountUsers()
+    {
+        return Users.Count;
+    }
+
+    public int CountRentals()
+    {
+        return Rentals.Count;
+    }
+
+    public int CountAvailableDevices()
+    {
+        List<Device> devices = new List<Device>();
+        foreach (var device in Devices)
+        {
+            if (device.Availability)
+            {
+                devices.Add(device);
+            }
+        }
+        return devices.Count;
+    }
+
+    public int CountActiveRentals()
+    {
+        List<Rental> rentals = new List<Rental>();
+        foreach (var rental in Rentals)
+        {
+            if (rental.IsActive)
+            {
+                rentals.Add(rental);
+            }
+        }
+        return rentals.Count;
+    }
+
 
     public List<Rental> GetUserActiveRentals(int userId)
     {
@@ -117,6 +160,16 @@ public class Database
             }
         }
         return devices;
+    }
+
+    public List<Device> GetAllDevices()
+    {
+        return Devices;
+    }
+
+    public List<User> GetAllUsers()
+    {
+        return Users;
     }
 
 

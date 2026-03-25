@@ -93,8 +93,11 @@ public class RentalCli
                 Console.WriteLine("2. Return item");
                 Console.WriteLine("3. Add item to database");
                 Console.WriteLine("4. Delayed rentals report");
-                Console.WriteLine("5. Add Employee to database");
-                Console.WriteLine("6. Logout");
+                Console.WriteLine("5. Items availability report");
+                Console.WriteLine("6. User rentals report");
+                Console.WriteLine("7. Add Employee to database");
+                Console.WriteLine("8. Generate Rental report");
+                Console.WriteLine("9. Logout");
                 
                 Console.Write("Option: ");
                 string choice = Console.ReadLine();
@@ -115,9 +118,18 @@ public class RentalCli
                         DelayedRentalsCli();
                         break;
                     case "5":
-                        AddEmployeeCli();
+                        AllItemsCli();
                         break;
                     case "6":
+                        UserRentalsCli();
+                        break;
+                    case "7":
+                        AddEmployeeCli();
+                        break;
+                    case "8":
+                        GenerateReportCli();
+                        break;
+                    case "9":
                         _serviceAccount.Logout();
                         break;
                     default:
@@ -245,7 +257,7 @@ public class RentalCli
 
         if (punishment > 0)
         {
-            Console.WriteLine($"Item returned with delay! You have to pay for it: {punishment}");
+            Console.WriteLine($"Item returned with delay! You have to pay for delay: {punishment}$");
         }
         else
         {
@@ -348,6 +360,41 @@ public class RentalCli
         Console.ReadLine();
     }
 
+    private void UserRentalsCli()
+    {
+        Console.WriteLine(" === Rental Services === ");
+        Console.WriteLine(" ==== User  rentals ==== ");
+
+        _serviceRaport.PrintAllUsers();
+        
+        int userId;
+        User selectedUser;
+        
+        while (true)
+        {
+            userId = GetNumber("Enter user ID: ");
+            
+            selectedUser = _serviceAccount.GetUserById(userId);
+
+            if (selectedUser != null)
+            {
+                break;
+            }
+            
+            Console.WriteLine("Invalid ID! Try again!");
+        }
+        
+        Console.Clear();
+        
+        Console.WriteLine(" === Rental Services === ");
+        Console.WriteLine(" ==== User  rentals ==== ");
+
+        _serviceRaport.PrintUserActiveRentals(userId);
+        
+        Console.WriteLine("Press enter to continue... ");
+        Console.ReadLine();
+    }
+
     private void AddEmployeeCli()
     {
         Console.WriteLine(" === Rental Services === ");
@@ -364,6 +411,33 @@ public class RentalCli
         
         _serviceAccount.RegisterEmployee(name, surname, usernameReg, passwordReg);
         Console.WriteLine("Employee added successfully! Press enter to continue...");
+        Console.ReadLine();
+    }
+
+    private void AllItemsCli()
+    {
+        Console.WriteLine(" === Rental Services === ");
+        Console.WriteLine(" ====== Item List ====== ");
+        
+        bool hasItems = _serviceRaport.PrintAllItems();
+        if (!hasItems)
+        {
+            Console.WriteLine("Press enter to return to menu...");
+            Console.ReadLine();
+            return;
+        }
+        Console.WriteLine("Press enter to continue... ");
+        Console.ReadLine();
+    }
+
+    public void GenerateReportCli()
+    {
+        Console.WriteLine(" === Rental Services === ");
+        Console.WriteLine(" =======  Report ======= ");
+
+        _serviceRaport.PrintSummary();
+        
+        Console.WriteLine("Press enter to continue... ");
         Console.ReadLine();
     }
 

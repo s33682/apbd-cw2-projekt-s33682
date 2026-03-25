@@ -1,5 +1,6 @@
 ﻿namespace EquipmentRental.Service;
 using Item;
+using Account;
 
 public class ServiceRaport
 {
@@ -44,6 +45,54 @@ public class ServiceRaport
         return true;
     }
 
+    public bool PrintAllItems()
+    {
+        List<Device> devices = db.GetAllDevices();
+
+        if (devices.Count == 0)
+        {
+            Console.WriteLine("No available devices.");
+            return false;
+        }
+
+        foreach (Device device in devices)
+        {
+            string status = device.Availability?"Available":"Rented";
+            Console.WriteLine($"{device.Id}: {device.Name} for {device.Price}$/day [ {status} ]");
+        }
+        return true;
+    }
+
+    public bool PrintAllUsers()
+    {
+        List<User> users = db.GetAllUsers();
+
+        if (users.Count == 0)
+        {
+            Console.WriteLine("No available users.");
+            return false;
+        }
+
+        foreach (User user in users)
+        {
+            Console.WriteLine($"{user.Id}: {user.Name} {user.Surname} [ {user.Username} ]");
+        }
+        return true;
+    }
+
+    public void PrintSummary()
+    {
+        int countItems = db.CountDevices();
+        int countAvailableItems = db.CountAvailableDevices();
+        int countUsers = db.CountUsers();
+        int countRentals = db.CountRentals();
+        int countActiveRentals = db.CountActiveRentals();
+        
+        Console.WriteLine($"Total items: {countItems} [Available: {countAvailableItems}]");
+        Console.WriteLine($"Total users: {countUsers}");
+        Console.WriteLine($"Total rentals: {countRentals} [Active: {countActiveRentals}]");
+    }
+
     public bool PrintUserActiveRentals(int userId)
     {
         List<Rental> rentals = db.GetUserActiveRentals(userId);
@@ -56,7 +105,7 @@ public class ServiceRaport
 
         foreach (Rental rental in rentals)
         {
-            Console.WriteLine($"{rental.Id}: Rented {rental.Item.Name} for {rental.Length}");
+            Console.WriteLine($"{rental.Id}: Rented {rental.Item.Name} for {rental.Length} days");
         }
         return true;
     }
