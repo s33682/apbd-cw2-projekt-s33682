@@ -24,7 +24,7 @@ public class ServiceRaport
         List<Device> devices = db.GetAvailableDevices();
         foreach (Device device in devices)
         {
-            Console.WriteLine($"{device.Id}: {device.Name} for {device.Price}/day");
+            Console.WriteLine($"{device.Id}: {device.Name} for {device.Price}$/day");
         }
     }
 

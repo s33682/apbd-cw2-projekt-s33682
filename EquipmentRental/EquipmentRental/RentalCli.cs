@@ -137,11 +137,11 @@ public class RentalCli
         string password = Console.ReadLine();
         if (_serviceAccount.Login(username, password))
         {
-            Console.WriteLine(" Login Successful! Press any enter to continue... ");
+            Console.WriteLine("Login Successful! Press any enter to continue... ");
         }
         else
         {
-            Console.WriteLine(" Login Failed! Press any enter to continue... ");
+            Console.WriteLine("Login Failed! Press any enter to continue... ");
         }
         Console.ReadLine();
     }
@@ -170,13 +170,9 @@ public class RentalCli
         Console.WriteLine(" ====== Rent Item ====== ");
         _serviceRaport.PrintAvailableItems();
         
-        Console.Write("Enter item ID: ");
-        string itemID = Console.ReadLine();
-        int itemId = int.Parse(itemID);
-
-        Console.Write("Enter duration in days: ");
-        string duration = Console.ReadLine();
-        int days = int.Parse(duration);
+        int itemId = GetNumber("Enter item ID: ");
+        
+        int days = GetNumber("Enter duration in days: ");
         
         _serviceRental.RentItem(itemId, current.Id, days);
         Console.WriteLine($"Item Rented! To pay: {_serviceItem.GetItemById(itemId).Price*days}. Press enter to continue...");
@@ -189,9 +185,7 @@ public class RentalCli
         Console.WriteLine(" ===== Return Item ===== ");
         _serviceRaport.PrintUserActiveRentals(current.Id);
         
-        Console.Write("Enter rental ID: ");
-        string rentalID = Console.ReadLine();
-        int rentalId = int.Parse(rentalID);
+        int rentalId = GetNumber("Enter rental ID: ");
 
         int punishment = _serviceRental.ReturnItem(rentalId);
 
@@ -225,9 +219,7 @@ public class RentalCli
                 Console.WriteLine(" === Rental Services === ");
                 Console.WriteLine(" ===== Add  Laptop ===== ");
                 
-                Console.Write("Price: ");
-                string priceLapStr = Console.ReadLine();
-                float priceLap = float.Parse(priceLapStr);
+                float priceLap = GetNumberFloat("Price: ");
                 
                 Console.Write("System: ");
                 string system = Console.ReadLine();
@@ -252,16 +244,12 @@ public class RentalCli
                 Console.WriteLine(" === Rental Services === ");
                 Console.WriteLine(" ====== Add  Camera ===== ");
                 
-                Console.Write("Price: ");
-                string priceCamStr = Console.ReadLine();
-                float priceCam = float.Parse(priceCamStr);
+                float priceCam = GetNumberFloat("Price: ");
                 
                 Console.Write("Lens: ");
                 string lens = Console.ReadLine();
                 
-                Console.Write("SD card size: ");
-                string sdCardSizeStr = Console.ReadLine();
-                int  sdCardSize = int.Parse(sdCardSizeStr);
+                int sdCardSize = GetNumber("SD card size: ");
                 
                 _serviceItem.AddCamera(priceCam, lens, sdCardSize);
                 Console.WriteLine("Item added successfully! Press enter to continue... ");
@@ -271,16 +259,12 @@ public class RentalCli
                 Console.WriteLine(" === Rental Services === ");
                 Console.WriteLine(" ==== Add  Projector === ");
                 
-                Console.Write("Price: ");
-                string priceProjStr = Console.ReadLine();
-                float priceProj = float.Parse(priceProjStr);
+                float priceProj = GetNumberFloat("Price: ");
                 
                 Console.Write("Resolution: ");
                 string resolution = Console.ReadLine();
                 
-                Console.Write("Brightness: ");
-                string brightnessStr = Console.ReadLine();
-                int  brightness = int.Parse(brightnessStr);
+                int brightness = GetNumber("Brightness: ");
                 
                 _serviceItem.AddProjector(priceProj, resolution, brightness);
                 Console.WriteLine("Item added successfully! Press enter to continue... ");
@@ -320,5 +304,29 @@ public class RentalCli
         _serviceAccount.RegisterEmployee(name, surname, usernameReg, passwordReg);
         Console.WriteLine("Employee added successfully! Press enter to continue...");
         Console.ReadLine();
+    }
+
+    private int GetNumber(string text)
+    {
+        int number;
+        Console.Write(text);
+        while (!int.TryParse(Console.ReadLine(), out number) || number <= 0)
+        {
+            Console.WriteLine("Invalid input! Please enter a positive number!");
+            Console.Write(text);
+        }
+        return number;
+    }
+    
+    private float GetNumberFloat(string text)
+    {
+        float number;
+        Console.Write(text);
+        while (!float.TryParse(Console.ReadLine(), out number) || number <= 0 )
+        {
+            Console.WriteLine("Invalid input! Please enter a positive number!");
+            Console.Write(text);
+        }
+        return number;
     }
 }
