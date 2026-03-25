@@ -168,8 +168,15 @@ public class RentalCli
     {
         Console.WriteLine(" === Rental Services === ");
         Console.WriteLine(" ====== Rent Item ====== ");
-        _serviceRaport.PrintAvailableItems();
-        
+        bool hasItems = _serviceRaport.PrintAvailableItems();
+
+        if (!hasItems)
+        {
+            Console.WriteLine("Press enter to return to menu...");
+            Console.ReadLine();
+            return;
+        }
+
         int itemId = GetNumber("Enter item ID: ");
         
         int days = GetNumber("Enter duration in days: ");
@@ -183,8 +190,15 @@ public class RentalCli
     {
         Console.WriteLine(" === Rental Services === ");
         Console.WriteLine(" ===== Return Item ===== ");
-        _serviceRaport.PrintUserActiveRentals(current.Id);
-        
+        bool hasRentals = _serviceRaport.PrintUserActiveRentals(current.Id);
+
+        if (!hasRentals)
+        {
+            Console.WriteLine("Press enter to return to menu...");
+            Console.ReadLine();
+            return;
+        }
+
         int rentalId = GetNumber("Enter rental ID: ");
 
         int punishment = _serviceRental.ReturnItem(rentalId);
@@ -281,8 +295,15 @@ public class RentalCli
         Console.WriteLine(" === Rental Services === ");
         Console.WriteLine(" === Delayed rentals === ");
         
-        _serviceRaport.PrintExpiredRentals();
-        
+        bool hasExpRentals = _serviceRaport.PrintExpiredRentals();
+
+        if (!hasExpRentals)
+        {
+            Console.WriteLine("Press enter to return to menu...");
+            Console.ReadLine();
+            return;
+        }
+
         Console.WriteLine("Press enter to continue... ");
         Console.ReadLine();
     }
