@@ -210,9 +210,6 @@ public class Database
         return max+1;
     }
     
-    
-    
-
     public User Login(string userName, string password)
     {
         for (int i=0; i<Users.Count; i++){

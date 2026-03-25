@@ -97,7 +97,8 @@ public class RentalCli
                 Console.WriteLine("6. User rentals report");
                 Console.WriteLine("7. Add Employee to database");
                 Console.WriteLine("8. Generate Rental report");
-                Console.WriteLine("9. Logout");
+                Console.WriteLine("9. Send item to Service");
+                Console.WriteLine("10. Logout");
                 
                 Console.Write("Option: ");
                 string choice = Console.ReadLine();
@@ -130,6 +131,9 @@ public class RentalCli
                         GenerateReportCli();
                         break;
                     case "9":
+                        ItemToServiceCli();
+                        break;
+                    case "10":
                         _serviceAccount.Logout();
                         break;
                     default:
@@ -438,6 +442,42 @@ public class RentalCli
         _serviceRaport.PrintSummary();
         
         Console.WriteLine("Press enter to continue... ");
+        Console.ReadLine();
+    }
+
+    public void ItemToServiceCli()
+    {
+        Console.WriteLine(" === Rental Services === ");
+        Console.WriteLine(" ==== Service  Item ==== ");
+        
+        bool hasItems = _serviceRaport.PrintAvailableItems();
+
+        if (!hasItems)
+        {
+            Console.WriteLine("Press enter to return to menu...");
+            Console.ReadLine();
+            return;
+        }
+
+        int itemId;
+        Device selectedItem;
+        
+        while (true)
+        {
+            itemId = GetNumber("Enter item ID: ");
+            
+            selectedItem = _serviceItem.GetItemById(itemId);
+
+            if (selectedItem != null && selectedItem.Availability)
+            {
+                break;
+            }
+            
+            Console.WriteLine("Invalid ID! Try again!");
+        }
+        
+        _serviceItem.ItemToService(itemId);
+        Console.WriteLine("Item sent to service successfully! Press enter to continue...");
         Console.ReadLine();
     }
 

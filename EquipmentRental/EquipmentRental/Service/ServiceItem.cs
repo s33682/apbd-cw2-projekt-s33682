@@ -30,4 +30,13 @@ public class ServiceItem
     {
         return db.GetItem(itemId);
     }
+    
+    public void ItemToService(int itemId)
+    {
+        var device = GetItemById(itemId);
+        if (device != null)
+        {
+            device.SetAvailability(false);
+        }
+    }
 }
